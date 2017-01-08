@@ -4,25 +4,27 @@ var _ = require('lodash');
 var app = express();
 
 app.get('/', function (req, res) {
-  res.send('Hello World!')
+  res.send('Hello World!');
 })
 
 app.post('/', function (req, res) {
-  execute(req, res)
+  execute(req, res);
 })
 
 var execute = function (req, res) {
-  var text = req.param('text');
+  var query = req.param('text');
   var message = {
   		response_type:"in_channel"
 	};
-  google(text, function (err, googleRes){
+  google(query, function (err, googleRes) {
+    console.log(err);
+    console.log(googleRes);
     if (err) {
       message.text = JSON.stringify(err);
     }
     else {
       message.text = "<" + googleRes.url + "|" + googleRes.query + ">";
-      message.attachments = _.map(googleRes.links, function(link){
+      message.attachments = _.map(googleRes.links.slice(0,5), function(link){
         return {
           color: "#36a64f",
           title: link.title,
@@ -31,8 +33,9 @@ var execute = function (req, res) {
         }
       });
     }
+    console.log("MESSAGE: " + JSON.stringify(message));
+    res.json(message);
   });
-  res.json(message);
 }
 
 var PORT = process.env.PORT || 3000;
