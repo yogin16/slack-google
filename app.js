@@ -4,7 +4,7 @@ var _ = require('lodash');
 var app = express();
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  execute(req, res);
 })
 
 app.post('/', function (req, res) {
