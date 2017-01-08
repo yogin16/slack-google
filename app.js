@@ -29,7 +29,7 @@ var execute = function (req, res) {
           title_link: link.link,
           text: link.description
         }
-      }
+      });
     }
   });
   res.json(message);
